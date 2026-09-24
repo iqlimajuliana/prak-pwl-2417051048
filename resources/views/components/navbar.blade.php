@@ -1,18 +1,6 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm mb-4">
+<nav class="navbar navbar-expand-lg border-bottom shadow-sm mb-4" style="background-color: #F8F5EE;">
   <div class="container">
-    <a class="navbar-brand fw-bold" href="#">PWL App</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url('/user') }}">Daftar User</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link btn btn-primary text-white ms-2 px-3" href="{{ route('user.create') }}">+ Tambah User</a>
-        </li>
-      </ul>
-    </div>
+    <a class="navbar-brand fw-semibold text-dark" href="#">Tugas</a>
+
   </div>
 </nav>

@@ -1,14 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h2 class="fw-bold mb-0">Daftar Pengguna</h2>
-        <p class="text-muted small">Kelola data pengguna dan kelas terdaftar</p>
-    </div>
+<div class="mb-4">
+    <h3 class="fw-semibold text-dark mb-1">Daftar Pengguna</h3>
+    <p class="text-muted small">Kelola data pengguna dan kelas terdaftar</p>
 </div>
-
-{{-- Memanggil komponen tabel terpisah --}}
 @include('components.user-table', ['users' => $users])
 
 @endsection
