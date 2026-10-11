@@ -2,51 +2,74 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Kelas;
-use App\Models\UserModel;
 use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public $userModel;
-    public $kelasModel;
-
-    public function __construct()
-    {
-        $this->userModel = new UserModel();
-        $this->kelasModel = new Kelas();
-    }
-
     public function index()
     {
-        $data = [
-            'title' => 'List User',
-            'users' => $this->userModel->getUser(),
-        ];
-
-        return view('list_user', $data);
+        $title = 'Daftar Pengguna';
+        $users = User::with('kelas')->get();
+        return view('list_user', compact('users', 'title'));
     }
 
     public function create()
     {
-        $kelas = $this->kelasModel->getKelas();
-
-        $data = [
-            'title' => 'Create User',
-            'kelas' => $kelas,
-        ];
-
-        return view('create_user', $data);
+        $title = 'Tambah Pengguna';
+        $kelas = Kelas::all();
+        return view('create_user', compact('kelas', 'title'));
     }
 
     public function store(Request $request)
     {
-        $this->userModel->create([
-            'nama'     => $request->input('nama'),
-            'nim'      => $request->input('npm'),
-            'kelas_id' => $request->input('kelas_id'),
+        $request->validate([
+            'nama' => 'required',
+            'nim' => 'required',
+            'kelas_id' => 'required',
         ]);
 
-        return redirect()->to('/user');
+        User::create([
+            'nama' => $request->nama,
+            'nim' => $request->nim,
+            'kelas_id' => $request->kelas_id,
+        ]);
+
+        return redirect('/user')->with('success', 'Data pengguna berhasil ditambahkan!');
+    }
+
+    public function edit($id)
+    {
+        $title = 'Edit Pengguna';
+        $user = User::findOrFail($id);
+        $kelas = Kelas::all();
+        return view('edit_user', compact('user', 'kelas', 'title'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'nama' => 'required',
+            'nim' => 'required',
+            'kelas_id' => 'required',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->update([
+            'nama' => $request->nama,
+            'nim' => $request->nim,
+            'kelas_id' => $request->kelas_id,
+        ]);
+
+        return redirect('/user')->with('success', 'Data pengguna berhasil diperbarui!');
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+
+        return redirect('/user')->with('success', 'Data pengguna berhasil dihapus!');
     }
 }

@@ -2,10 +2,18 @@
 
 @section('content')
 <div class="container my-4">
+    {{-- Alert Notifikasi --}}
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm mb-4" style="background-color: #E2F0D9; color: #385723;" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h3 class="fw-semibold text-dark mb-1">Daftar Mata Kuliah</h3>
-            <p class="text-muted small">Daftar mata kuliah terdaftar dalam sistem</p>
+            <p class="text-muted small">Kelola dan perbarui data mata kuliah</p>
         </div>
         <a href="{{ route('matakuliah.create') }}" class="btn text-dark px-3 fw-medium" style="background-color: #E8E2D5;">+ Tambah Mata Kuliah Baru</a>
     </div>
@@ -19,6 +27,7 @@
                             <th class="py-3 px-4 fw-semibold text-muted">ID (UUID)</th>
                             <th class="py-3 px-4 fw-semibold text-muted">Nama Mata Kuliah</th>
                             <th class="py-3 px-4 fw-semibold text-muted text-center">SKS</th>
+                            <th class="py-3 px-4 fw-semibold text-muted text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,10 +40,21 @@
                                         {{ $mk->sks }} SKS
                                     </span>
                                 </td>
+                                <td class="py-3 px-4 text-center">
+                                    <div class="d-flex justify-content-center gap-2">
+                                        <a href="{{ route('matakuliah.edit', $mk->id) }}" class="btn btn-sm text-dark border-0 px-3" style="background-color: #E8E2D5;">Edit</a>
+                                        
+                                        <form action="{{ route('matakuliah.destroy', $mk->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus mata kuliah ini?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-sm text-white border-0 px-3" style="background-color: #C96868;">Hapus</button>
+                                        </form>
+                                    </div>
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="text-center py-4 text-muted">Belum ada data mata kuliah.</td>
+                                <td colspan="4" class="text-center py-4 text-muted">Belum ada data mata kuliah.</td>
                             </tr>
                         @endforelse
                     </tbody>
