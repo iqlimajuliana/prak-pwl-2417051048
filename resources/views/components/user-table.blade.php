@@ -8,6 +8,7 @@
             <th class="py-3 px-4 fw-semibold text-muted">Nama Lengkap</th>
             <th class="py-3 px-4 fw-semibold text-muted">NPM</th>
             <th class="py-3 px-4 fw-semibold text-muted text-center">Kelas</th>
+            <th class="py-3 px-4 fw-semibold text-muted text-center">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -18,13 +19,25 @@
               <td class="py-3 px-4 text-muted">{{ $user->nim }}</td>
               <td class="py-3 px-4 text-center">
                 <span class="badge rounded-pill px-3 py-2 fw-normal" style="background-color: #E8E2D5; color: #4A4A4A;">
-                  {{ $user->nama_kelas }}
+                  {{-- Aman untuk Eloquent Relationship maupun JOIN --}}
+                  {{ $user->kelas->nama_kelas ?? $user->nama_kelas ?? 'Tanpa Kelas' }}
                 </span>
+              </td>
+              <td class="py-3 px-4 text-center">
+                <div class="d-flex justify-content-center gap-2">
+                  <a href="{{ route('user.edit', $user->id) }}" class="btn btn-sm text-dark border-0 px-3" style="background-color: #E8E2D5;">Edit</a>
+                  
+                  <form action="{{ route('user.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus user ini?')">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm text-white border-0 px-3" style="background-color: #C96868;">Hapus</button>
+                  </form>
+                </div>
               </td>
             </tr>
           @empty
             <tr>
-              <td colspan="4" class="text-center py-4 text-muted">Belum ada data pengguna.</td>
+              <td colspan="5" class="text-center py-4 text-muted">Belum ada data pengguna.</td>
             </tr>
           @endforelse
         </tbody>
